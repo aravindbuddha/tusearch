@@ -3,9 +3,8 @@
   "name": "TU-Search",
   "version": "0.1",
   "offline_enabled": true,
- 	"permissions": ["storage", 
- 									"experimental", 
- 									"https://www.googleapis.com/tasks/*"
+ 	"permissions": [ 
+ 									"http://www.techumber.com/feeds/posts/summary"
  									],
   "app": {
     "background": {
