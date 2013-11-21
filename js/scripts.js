@@ -1,57 +1,87 @@
-//App
-var App={
+
+var q=document.getElementById('q');
+var out=document.getElementById('out');
+
+var app={
   init:function(){
-
+    this.events();
   },
-  loadResult:function(){
-    
+  events:function(){
+    q.addEventListener('keypress',this.getResult());
   },
-  
-};
-
-var App=function(input,result){
-  var base=this;
-
-  //this.input=this.getNode(input);
-  //this.result=this.getNode(result);
-  this.init=function(){
-
-  };
-  this.getNode=function(id){
-    return document.getElementById(id);
-  };
-  this.search=function(){
-    this.getResult();
-  };
-  this.events=function(){
-    this.input.addEventListner('change',this.search);
-  };
-  this.getResult=function(){
+  getResult:function(){
+    var base=this;
+    var url="http://www.techumber.com/feeds/posts/summary?alt=json&q="+q.value+"&max-results=2000";
     var xhr=new XMLHttpRequest();
-    //var inp=this.input.value;
-    var inp="css";
-    var url="http://ajax.googleapis.com/ajax/services/feed/load?v=3.0&num=100&q=http://feeds.feedburner.com/techumber?q=bear";
-    //var url="http://www.techumber.com/feeds/posts/default?max-results=2000&alt=json-in-script&callback=data";
-    xhr.open('GET', url, true);
-   // xhr.responseType = 'json';
+    xhr.open('GET',url,true);
     xhr.onload = function(e) {
-      if (this.status == 200) {
-        console.log(this.respond);
+      if(this.status == 200) {
+        var out=document.getElementById('out');
+        base.showResult(JSON.parse(this.response));   
       }
     };
     xhr.send();
-    function data(json){
-      console.log(json);
-    }
-  };
-  this.showResult=function(data){
-    html="<h2>Result</h2>";
-    html+=data.feed.entry;
-    console.log(html);
-  }; 
-};
-var app=new App();
-app.getResult();
+  },
+  showResult:function(r){ console.log(r);
+      var fallbackThumb= "http://4.bp.blogspot.com/-ZguqmEQ-Hpk/UonGYGNZkmI/AAAAAAAACBo/3IRunOZ95oQ/s72-c/CSS-Preprocessors-For-Beginners(sass)-techumber.png" // Fallback thumbnail untuk posting tak bergambar
+      var result='';
+      out.innerHTML=" ";
+      var thumb=null;
+      r.feed.entry.forEach(function(post){
+        if ("media$thumbnail" in post) {
+          thumb=new Blob([post.media$thumbnail.url],{type:'image/png'});
+        }
+        else{
+          thumb=new Blob([fallbackThumb],{type:'image/png'});
+        }
+          result+='<div class="post">';
+          result+='<img src="'+window.URL.createObjectURL(thumb) +'" />';
+          result+='<h2>'+post.title.$t+'</h2>';
+          result+='<p>'+post.summary.$t+'</p>';
+          result+='</div>';
+
+      });
+      out.innerHTML=result;
+      //var thumb=new Blob([img],{type:'image/png'}); 
+      
+      //var blob=new Blob([img], {type: 'image/png'});
+      // result+='<div class="post">';
+      // result+='<img src="'+window.URL.createObjectURL(img) +'" width="'+post.media$thumbnail.width+'" height="'+post.media$thumbnail.height+'"/>';
+      // result+='<h2>'+post.title.$t+'</h2>';
+      // result+='<p>'+post.summary.$t+'</p>';
+      // result+='</div>';
+      //result+=JSON.stringify(post.title.$t);
+    
+    //result=JSON.stringify(r.feed.entry[0].title.$t);
+  }
+}
+document.addEventListener('DOMContentLoaded',function(){
+  app.init();
+});
+
+// var q=document.getElementById('q');
+// // document.addEventListener('onkeypress',function(){
+// //   alert('hi');
+// //   console.log(e.keyCode);
+// // });
+// var log=document.getElementById('log');
+// q.addEventListener('keypress', function(e){
+//   alert(e.target);
+// }, false);
+
+// function logeventinfo (ev) { alert('hi');
+//   // log.innerHTML = '';
+//   // out = '<ul>';
+//   // for (var i in ev) {
+//   //   if (typeof ev[i] === 'function' || i === i.toUpperCase()) {
+//   //     continue;
+//   //   }
+//   //   out += '<li><span>'+i+'</span>: '+ev[i]+'</li>';
+//   // }
+//   // log.innerHTML += out + '</ul>';
+// }
+
+
 //  var searchFormConfig = {  
 //         numPost: 9999, // Jumlah maksimal temuan
 //         summaryPost: true, // 'true' jika ingin menampilkan deskripsi posting
