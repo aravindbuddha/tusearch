@@ -1,11 +1,23 @@
 //App
+var App={
+  init:function(){
+
+  },
+  loadResult:function(){
+    
+  },
+  
+};
+
 var App=function(input,result){
-  this.input=this.$(input);
-  this.result=this.$(result);
+  var base=this;
+
+  //this.input=this.getNode(input);
+  //this.result=this.getNode(result);
   this.init=function(){
 
   };
-  this.$=function(id){
+  this.getNode=function(id){
     return document.getElementById(id);
   };
   this.search=function(){
@@ -16,26 +28,30 @@ var App=function(input,result){
   };
   this.getResult=function(){
     var xhr=new XMLHttpRequest();
-    var inp=this.input.value;
-   // var url=http://ajax.googleapis.com/ajax/services/feed/load?v=3.0&num=100&q=http://feeds.feedburner.com/techumber?q=bear
-    var url="http://www.techumber.com/feeds/posts/summary?alt=json-in-script&callback=this.showResult&q=" + inp + "&max-results=5";
+    //var inp=this.input.value;
+    var inp="css";
+    var url="http://ajax.googleapis.com/ajax/services/feed/load?v=3.0&num=100&q=http://feeds.feedburner.com/techumber?q=bear";
+    //var url="http://www.techumber.com/feeds/posts/default?max-results=2000&alt=json-in-script&callback=data";
     xhr.open('GET', url, true);
-    xhr.responseType = 'json';
+   // xhr.responseType = 'json';
     xhr.onload = function(e) {
       if (this.status == 200) {
-        console.log(this.responseText);
+        console.log(this.respond);
       }
     };
     xhr.send();
+    function data(json){
+      console.log(json);
+    }
   };
   this.showResult=function(data){
     html="<h2>Result</h2>";
     html+=data.feed.entry;
     console.log(html);
   }; 
-}
-
-
+};
+var app=new App();
+app.getResult();
 //  var searchFormConfig = {  
 //         numPost: 9999, // Jumlah maksimal temuan
 //         summaryPost: true, // 'true' jika ingin menampilkan deskripsi posting
