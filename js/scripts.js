@@ -1,4 +1,3 @@
-
 var q=document.getElementById('q');
 var out=document.getElementById('out');
 
@@ -7,7 +6,10 @@ var app={
     this.events();
   },
   events:function(){
-    q.addEventListener('keypress',this.getResult());
+    var base=this;
+    q.addEventListener('keypress',function(){
+      base.getResult();
+    });
   },
   getResult:function(){
     var base=this;
@@ -23,36 +25,16 @@ var app={
     xhr.send();
   },
   showResult:function(r){ console.log(r);
-      var fallbackThumb= "http://4.bp.blogspot.com/-ZguqmEQ-Hpk/UonGYGNZkmI/AAAAAAAACBo/3IRunOZ95oQ/s72-c/CSS-Preprocessors-For-Beginners(sass)-techumber.png" // Fallback thumbnail untuk posting tak bergambar
-      var result='';
-      out.innerHTML=" ";
-      var thumb=null;
-      r.feed.entry.forEach(function(post){
-        if ("media$thumbnail" in post) {
-          thumb=new Blob([post.media$thumbnail.url],{type:'image/png'});
-        }
-        else{
-          thumb=new Blob([fallbackThumb],{type:'image/png'});
-        }
-          result+='<div class="post">';
-          result+='<img src="'+window.URL.createObjectURL(thumb) +'" />';
-          result+='<h2>'+post.title.$t+'</h2>';
-          result+='<p>'+post.summary.$t+'</p>';
-          result+='</div>';
-
-      });
-      out.innerHTML=result;
-      //var thumb=new Blob([img],{type:'image/png'}); 
-      
-      //var blob=new Blob([img], {type: 'image/png'});
-      // result+='<div class="post">';
-      // result+='<img src="'+window.URL.createObjectURL(img) +'" width="'+post.media$thumbnail.width+'" height="'+post.media$thumbnail.height+'"/>';
-      // result+='<h2>'+post.title.$t+'</h2>';
-      // result+='<p>'+post.summary.$t+'</p>';
-      // result+='</div>';
-      //result+=JSON.stringify(post.title.$t);
-    
-    //result=JSON.stringify(r.feed.entry[0].title.$t);
+    var match = new RegExp(q.value, "ig");
+    out.innerHTML=" ";
+    var result=" ";
+    r.feed.entry.forEach(function(post){
+      result+='<div class="post">';
+      result+='<h2>'+post.title.$t.replace(match, "<mark>" + q.value + "</mark>")+'</h2>';
+      result+='<p>'+post.summary.$t.replace(match, "<mark>" + q.value + "</mark>")+'</p>';
+      result+='</div>';
+    });
+    out.innerHTML=result;
   }
 }
 document.addEventListener('DOMContentLoaded',function(){

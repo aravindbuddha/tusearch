@@ -5,8 +5,18 @@
 	border: 0;
 }
 body{
-	background: #aaa;
+	background: #fff;
 	font: 16px/18px Arial,sans-serif;
+}
+input{
+	border: 2px solid #aaa;
+	border-radius: 5px;
+	padding: 5px;
+	width: 400px;
+	margin: auto;
+	text-align: center;
+	outline: none;
+	margin-left: 44px;
 }
 .logo a{
 	background: url('img/techumberlogo.png') no-repeat;
@@ -34,4 +44,15 @@ body{
 @-webkit-keyframes spin {
 	0% { -webkit-transform:rotate(0deg); }
 	100% { -webkit-transform:rotate(360deg);  }
+}
+
+#out{
+	padding: 20px;
+}
+#out div{
+	padding-bottom: 20px;
+}
+#out h2{
+	font-size: 20px;
+	line-height: 21px;
 }
